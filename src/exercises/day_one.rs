@@ -1,17 +1,22 @@
-use std::iter::zip;
+use std::{collections::HashMap, iter::zip};
 
 use crate::ExerciseInput;
 
 pub fn run(input: &ExerciseInput) -> Result<(), &'static str>{
+    let (xs, ys) = parse_input(&input.text)?;
+
     if input.iteration == 0{
-        solve_first_problem(&input.text)
+        solve_fst_puzzle(xs, ys)
+    }
+    else if input.iteration == 1{
+        solve_snd_puzzle(xs, ys)
     }
     else {
         Err("Unable to run exercise")
     }
 }
 
-fn solve_first_problem(input: &String) -> Result<(), &'static str>{
+fn parse_input(input: &String) -> Result<(Vec<i32>, Vec<i32>), &'static str> {
     let mut list_one: Vec<i32> = vec![];
     let mut list_two: Vec<i32> = vec![];
 
@@ -28,14 +33,19 @@ fn solve_first_problem(input: &String) -> Result<(), &'static str>{
         }
     }
 
-    let result = calculate_distance(list_one, list_two);
+    Ok((list_one, list_two))
+}
+
+fn solve_fst_puzzle(xs: Vec<i32>, ys: Vec<i32>) -> Result<(), &'static str>{
+
+    let result = distance(xs, ys);
 
     println!("{result}");
 
     Ok(())
 }
 
-fn calculate_distance(mut list_one: Vec<i32>, mut list_two: Vec<i32>) -> u32{
+fn distance(mut list_one: Vec<i32>, mut list_two: Vec<i32>) -> u32 {
     list_one.sort();
     list_two.sort();
 
@@ -46,19 +56,58 @@ fn calculate_distance(mut list_one: Vec<i32>, mut list_two: Vec<i32>) -> u32{
     ret
 }
 
+fn solve_snd_puzzle(xs: Vec<i32>, ys: Vec<i32>) -> Result<(), &'static str>{
+
+    let result = similarity_score(xs, ys);
+
+    println!("{result}");
+
+    Ok(())
+}
+
+fn similarity_score(xs: Vec<i32>, ys: Vec<i32>) -> i32 {
+    let ocurrence_counter: HashMap<i32,u16> = ys.iter().fold(HashMap::new(), |mut acc, y| {
+        *acc.entry(*y).or_insert(0) += 1;
+        acc
+    });
+
+    let mut score: i32 = 0;
+
+    for x in xs {
+        match ocurrence_counter.get(&x) {
+            Some(ocurrences) => score += x * i32::from(*ocurrences),
+            None => ()
+        }
+    }
+
+    score
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn completes_day_1_example(){
+    fn test_calculates_distance(){
         let should_be = 11;
 
         let list_one = vec![3, 4, 2, 1, 3, 3];
         let list_two = vec![4, 3, 5, 3, 9, 3];
 
-        let result = calculate_distance(list_one, list_two);
+        let result = distance(list_one, list_two);
 
         assert_eq!(should_be, result);
+    }
+
+    #[test]
+    fn test_calculates_similarity_score(){
+        let should_be = 31;
+
+        let xs = vec![3, 4, 2, 1, 3, 3];
+        let ys = vec![4, 3, 5, 3, 9, 3];
+
+        let similarity = similarity_score(xs, ys);
+
+        assert_eq!(should_be, similarity)
     }
 }
