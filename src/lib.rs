@@ -21,20 +21,23 @@ impl Config {
     }
 }
 
-pub struct ExerciseInput {
+pub struct PuzzleInput {
+    day: u8,
     iteration: u8,
     text: String
 }
 
-impl ExerciseInput {
-    pub fn build(config: &Config) -> Result<ExerciseInput, Box<dyn Error>> {
+impl PuzzleInput {
+    pub fn build(config: &Config) -> Result<PuzzleInput, Box<dyn Error>> {
         let file_path = format!("./data/day/{}/input", config.day);
+
+        let day = config.day.parse::<u8>()?;
 
         let iteration = config.iteration.parse::<u8>()?;
 
         let text = fs::read_to_string(file_path)?;
 
-        Ok(ExerciseInput {iteration, text})
+        Ok(PuzzleInput {day, iteration, text})
     }
 
 }

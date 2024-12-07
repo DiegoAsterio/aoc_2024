@@ -1,8 +1,8 @@
 use std::{collections::HashMap, iter::zip};
 
-use crate::ExerciseInput;
+use crate::PuzzleInput;
 
-pub fn run(input: &ExerciseInput) -> Result<(), &'static str>{
+pub fn run(input: &PuzzleInput) -> Result<(), &'static str>{
     let (xs, ys) = parse_input(&input.text)?;
 
     if input.iteration == 0{
