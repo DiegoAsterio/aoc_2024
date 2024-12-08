@@ -2,7 +2,7 @@ use std::{collections::HashMap, iter::zip};
 
 use crate::PuzzleInput;
 
-pub fn run(input: &PuzzleInput) -> Result<(), &'static str>{
+pub fn run(input: &PuzzleInput) -> Result<(), &'static str> {
     let (xs, ys) = parse_input(&input.text)?;
 
     if input.iteration == 0{
@@ -12,7 +12,7 @@ pub fn run(input: &PuzzleInput) -> Result<(), &'static str>{
         solve_snd_puzzle(xs, ys)
     }
     else {
-        Err("Unable to run exercise")
+        Err("Unable to solve puzzle for day 1")
     }
 }
 
