@@ -1,4 +1,4 @@
-use std::{iter::zip, str::FromStr};
+use std::str::FromStr;
 
 use crate::PuzzleInput;
 
