@@ -89,9 +89,7 @@ fn is_increasing_and_safe(report: &Vec<i32>, tolerance: i32) -> bool{
 
 #[cfg(test)]
 mod tests {
-    use crate::exercises::day_two::assess_level;
-
-    use super::{count_safe_reports, SafetyLevel};
+    use super::{assess_level, count_safe_reports, SafetyLevel};
 
     #[test]
     fn report_one_puzzle_one(){
